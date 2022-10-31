@@ -18,15 +18,6 @@ const sketch = () => {
         let chance = 0.46;
         const gap = 25;
 
-        // rotate
-        const rotate = (hc, vc) => {
-            if (Math.random() > 0.2) return;
-            context.translate(hc, vc);
-            context.rotate((45 * Math.PI) / 180);
-            context.translate(-hc, -vc);
-        };
-
-
         for (let i = 0; i < 5; i++) {
             for (let j = 0; j < 5; j++) {
                 for (let n = 0; n <12; n++) {
