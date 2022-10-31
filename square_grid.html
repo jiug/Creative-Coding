@@ -6,23 +6,43 @@
             let canvas = document.querySelector('canvas');
             let context = canvas.getContext('2d');
 
+            context.lineWidth = 3;
 
             let width = 60;
             let height = 60;
-            for (let n = 0; n <12; n++) {
-                for (let i = 0; i < 5; i++) {
-                    for (let j = 0; j < 5; j++) {
-                        let gap = 20;
-                        let x = 100 + (60 + gap) * i;
-                        let y = 100 + (60 + gap) * j;
+            let x, y;
+            let chance = 0.01
+            const gap = 20;
 
+            for (let i = 0; i < 5; i++) {
+                for (let j = 0; j < 5; j++) {
+                    for (let n = 0; n <12; n++) {
+                        x = 100 + (60 + gap) * i;
+                        y = 100 + (60 + gap) * j;
+
+                        // Takes squares out in a random gradient
+                        // if (Math.random() > chance) {
+                        //     context.beginPath();
+                        //     context.rect(x,y,width,height);
+                        //     context.stroke();
+                        // }
+
+                        // Stops making inner squares in a random gradient
+                        if (Math.random() < chance) {
+                            continue
+                        }
                         context.beginPath();
                         context.rect(x,y,width,height);
                         context.stroke();
+
+                        width -= 5;
+                        height -= 5;
                     }
+                    width = 60;
+                    height = 60;
+                    chance += 0.02;
                 }
-                width -= 5;
-                height -= 5;
+                chance += 0.05
             }
 
         </script>
