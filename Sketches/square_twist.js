@@ -9,17 +9,18 @@ const sketch = () => {
         context.fillStyle = 'white';
         context.fillRect(0, 0, width, height);
         context.strokeStyle= "black";
-        context.lineWidth = 1;
+        context.lineWidth = 0.05;
         // context.lineWidth = 0.24;
 
         // draws
         let w = 1080;
         let h = 1080;
         let x, y;
-        const gap = 5;
-        const rep =32
+        const gap = 0.023565;
+        const rep = 50000;
 
-        // const gap = 2.4;
+
+        // const gap = 2.4 , 1.035, 0.1815;
         // const rep =10000;
 
         for (let n = 0; n < rep; n++) {
