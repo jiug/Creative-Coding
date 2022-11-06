@@ -25,41 +25,46 @@ const sketch = () => {
 
     const cx = width * 0.5;
     const cy = width * 0.5;
-    const w = width * 0.01;
-    const h = width * 0.1;
-    let x,y;
+    const w = width * 0.0005;
+    const h = width * 0.40;
+    // let x,y;
 
-    const num = 12;
+    let x = 120;
+    let y = 140;
+
+    const num = 200;
     const radius = width * 0.25;
 
     for (let i = 0; i < num; i++) {
         const slice = math.degToRad(360/num);
         const angle = slice * i;
 
-        x = cx + radius * Math.sin(angle);
-        y = cy + radius * Math.cos(angle);
+        // x = cx + radius * Math.sin(angle);
+        // y = cy + radius * Math.cos(angle);
+
+        x += 4;
+        y += 2;
 
         context.save();
         context.translate(x,y);
-        context.rotate(-angle);
-        context.scale(random.range(0.3,3), random.range(0.3,1.6));
+        context.rotate(0.5*random.noise1D(0.02*i));
 
         context.beginPath();
-        context.rect(-w *0.5,-h *0.5,w,h);
+        context.rect(0,0,w,h);
         context.fill();
         context.restore();
 
 
-        context.save();
-        context.translate(cx,cy);
-        context.rotate(-angle);
-
-        context.lineWidth = random.range(5,20);
-        context.beginPath();
-        context.arc(0,0,radius, slice*-.3, slice* 0.3);
-        context.stroke();
-
-        context.restore();
+        // context.save();
+        // context.translate(cx,cy);
+        // context.rotate(-angle);
+        //
+        // context.lineWidth = random.range(5,20);
+        // context.beginPath();
+        // context.arc(0,0,radius, slice*-.3, slice* 0.3);
+        // context.stroke();
+        //
+        // context.restore();
 
     };
   };
