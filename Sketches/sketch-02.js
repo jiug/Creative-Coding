@@ -3,7 +3,8 @@ const math = require('canvas-sketch-util/math');
 const random = require('canvas-sketch-util/random');
 
 const settings = {
-  dimensions: [ 1080, 1080 ]
+  dimensions: [ 1080, 1080 ],
+  animate: false
 };
 
 // Created funcitons
@@ -63,7 +64,6 @@ const sketch = () => {
         context.stroke();
 
         context.restore();
-
     };
   };
 };

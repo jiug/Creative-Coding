@@ -15,10 +15,12 @@ const settings = {
 //
 // animate();
 
+const particles = 100;
+
 const sketch = ({ context, width, height }) => {
     const agents = [];
 
-    for (let i = 0; i < 40 ; i++) {
+    for (let i = 0; i < particles ; i++) {
         const x = random.range(0,width);
         const y = random.range(0,height);
 
@@ -32,13 +34,13 @@ const sketch = ({ context, width, height }) => {
         for (let i = 0; i < agents.length; i++) {
             const agent = agents [i];
 
-            for (let j = i + 1; j < 40; j++) {
+            for (let j = i + 1; j < agents.length; j++) {
                 const other = agents[j];
 
                 const dist = agent.pos.getDistance(other.pos);
-                if (dist > 200) continue;
+                if (dist > 100) continue;
 
-                context.lineWidth = math.mapRange(dist,0,200,12,1);
+                context.lineWidth = math.mapRange(dist,0,100,12,1);
 
                 context.beginPath();
                 context.moveTo(agent.pos.x, agent.pos.y);
@@ -51,7 +53,12 @@ const sketch = ({ context, width, height }) => {
         agents.forEach(agent => {
             agent.update();
             agent.draw(context);
-            agent.bounce(width, height);
+            if (agent.radius < 8) {
+                agent.wrap(width, height);
+            } else {
+                agent.bounce(width, height);
+            };
+
         });
     };
 };
@@ -82,6 +89,13 @@ class Agent {
     bounce(width, height) {
         if (this.pos.x <= 0 || this.pos.x >= width) this.vel.x *= -1;
         if (this.pos.y <= 0 || this.pos.y >= height) this.vel.y *= -1;
+    };
+
+    wrap(width, height) {
+        if (this.pos.x < 0) this.pos.x = width;
+        if (this.pos.x > width) this.pos.x = 0;
+        if (this.pos.y < 0) this.pos.y = height;
+        if (this.pos.y > height) this.pos.y = 0;
     };
 
     update(){
