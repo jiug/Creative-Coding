@@ -25,38 +25,41 @@ const sketch = () => {
 
     const cx = width * 0.5;
     const cy = width * 0.5;
-    const w = width * 0.01;
+    const w = width * 0.001;
     const h = width * 0.1;
     let x,y;
 
-    const num = 12;
-    const radius = width * 0.25;
+    const num = 500;
+    const radius = width * 0.5;
 
     for (let i = 0; i < num; i++) {
         const slice = math.degToRad(360/num);
         const angle = slice * i;
 
-        x = cx + radius * Math.sin(angle);
-        y = cy + radius * Math.cos(angle);
+        x = cx + radius * Math.sin(angle) ;
+        y = cy + radius * Math.cos(angle) ;
 
+        // Radial elements
         context.save();
-        context.translate(x,y);
+
+        context.translate(2*x,2*y);
         context.rotate(-angle);
-        context.scale(random.range(0.3,3), random.range(0.3,1.6));
+        context.scale(random.range(0.3,3), random.range(0.3,16));
 
         context.beginPath();
-        context.rect(-w *0.5,-h *0.5,w,h);
+        context.rect(random.range(-5,5),-h*random.range(.1,.5),w*random.range(.5,1),random.range(5,2));
         context.fill();
+
         context.restore();
 
-
+        // Arc Elements
         context.save();
-        context.translate(cx,cy);
+        context.translate(2*cx,2*cy);
         context.rotate(-angle);
 
-        context.lineWidth = random.range(5,20);
+        context.lineWidth = random.range(1,5);
         context.beginPath();
-        context.arc(0,0,radius, slice*-.3, slice* 0.3);
+        context.arc(0,0,radius*random.range(.1,3), slice*-random.range(.3,50), slice*random.range(.3,2));
         context.stroke();
 
         context.restore();
