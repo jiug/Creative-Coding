@@ -3,56 +3,60 @@ const math = require('canvas-sketch-util/math');
 const random = require('canvas-sketch-util/random');
 
 const settings = {
-  dimensions: [ 1080, 1080 ]
+  dimensions: [ 1080, 1080 ],
+  animate: true
 };
 
+
 const sketch = () => {
-  return ({ context, width, height }) => {
-    context.fillStyle = 'white';
-    context.fillRect(0, 0, width, height);
+    let velx = 0;
+    let vely = 0;
 
-    context.fillStyle = "black";
+    return ({ context, width, height }) => {
+        context.fillStyle = 'white';
+        context.fillRect(0, 0, width, height);
 
-    let x = 140;
-    let y = 100;
+        context.fillStyle = "black";
 
-    const num = 200;
+        let x = 140;
+        let y = 150;
 
-    let noise = [];
 
-    const drift = 0.015;
+        const step = 0.0001;
+        const num = 110;
 
-    for (let i = 0; i < num; i++) {
-        let count = 0;
+        let noise = [];
 
-        x += 1.8;
-        y += (5-0.01*i);
+        const drift = 0.025;
 
-        // Populate a different perlin noise array for every line
-        for (l = 0; l < 200; l++){
-            noise[l] = random.noise2D(drift*l,drift*i);
-        }
+        for (let i = 0; i < num; i++) {
+            let count = 0;
 
-        context.save();
-        context.translate(x,y);
+            //x += 1.8;
+            y += (7+0.001*i);
 
-        context.beginPath();
+            // Populate a different perlin noise array for every line
+            for (l = 0; l < 200; l++){
+                noise[l] = random.noise2D(drift*l+velx,drift*i-vely);
+            }
 
-        // Draw every line point by point
-        for (j = 0; j < noise.length - i; j++) {
-            let a = i;
+            context.save();
+            context.translate(x,y);
+            context.beginPath();
 
-            context.lineTo(4*count,0.5*a*noise[j]);
-            count++;
+            // Draw every line point by point
+            for (j = 0; j < noise.length; j++) {
+                context.lineTo(4*count,0.6*i*noise[j]);
+                count++;
+            };
+
+            context.stroke();
+            context.restore();
+
+            velx += step;
+            vely += step;
         };
-
-        context.stroke();
-        context.restore();
-
-
-
     };
-  };
 };
 
 canvasSketch(sketch, settings);
