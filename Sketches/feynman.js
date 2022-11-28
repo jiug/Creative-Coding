@@ -1,6 +1,8 @@
 const canvasSketch = require('canvas-sketch');
 const random = require('canvas-sketch-util/random');
 const math = require('canvas-sketch-util/math');
+const Tweakpane = require('tweakpane');
+
 
 const settings = {
   dimensions: [ 1080, 1080 ],
@@ -14,13 +16,14 @@ const settings = {
 // };
 //
 // animate();
-
-const count = 2;
-const G = 10;
+const params = {
+  count: 2,
+  g: 10,
+};
 const sketch = ({ context, width, height }) => {
   const particles = [];
 
-  for (let i = 0; i < count ; i++) {
+  for (let i = 0; i < params.count ; i++) {
     const x = random.range(0,width);
     const y = random.range(0,height);
 
@@ -64,7 +67,7 @@ const sketch = ({ context, width, height }) => {
   };
 };
 
-
+createPane();
 canvasSketch(sketch, settings);
 
 class Vector {
@@ -122,7 +125,7 @@ class Particle {
     for (let i = 0; i < a.length; i++) {
       const particleB = a[i];
       const dist = this.pos.getDistance(particleB.pos);
-      let force = G * this.charge * particleB.charge / dist*dist;
+      let force = params.g * this.charge * particleB.charge / dist*dist;
 
       if (dist == 0) force = 0;
 
