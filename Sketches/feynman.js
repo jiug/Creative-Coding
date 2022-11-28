@@ -9,21 +9,19 @@ const settings = {
   animate: true
 };
 
-// Simple animation loop without canvas-sketch
-// const animate =  () => {
-//     console.log('domestika');
-//     requestAnimationFrame(animate);
-// };
-//
-// animate();
 const params = {
-  count: 2,
+  count: 5,
   g: 10,
 };
+
+
+
 const sketch = ({ context, width, height }) => {
   const particles = [];
+  const count = params.count;
+  const g = params.g;
 
-  for (let i = 0; i < params.count ; i++) {
+  for (let i = 0; i < count ; i++) {
     const x = random.range(0,width);
     const y = random.range(0,height);
 
@@ -41,6 +39,7 @@ const sketch = ({ context, width, height }) => {
         const other = particles[j];
 
         const dist = agent.pos.getDistance(other.pos);
+
         if (dist > 100) continue;
 
         context.lineWidth = math.mapRange(dist,0,100,12,1);
@@ -52,23 +51,22 @@ const sketch = ({ context, width, height }) => {
       };
     };
 
-
     particles.forEach(particle => {
-
       particle.update(particle.forceField(particles));
       particle.draw(context);
-      // if (particle.radius < 8) {
-        particle.wrap(width, height);
-      // } else {
-      //  particle.bounce(width, height);
-      //};
-
+      particle.wrap(width, height);
     });
   };
 };
 
-createPane();
-canvasSketch(sketch, settings);
+const createPane = () => {
+  const pane = new Tweakpane.Pane();
+  let folder;
+
+  folder = pane.addFolder({title: 'Particles'})
+  folder.addInput(params, 'count', {min: 2, max: 150, step: 1});
+  folder.addInput(params, 'g', {min: 1, max: 20000});
+};
 
 class Vector {
   constructor(x, y) {
@@ -114,18 +112,20 @@ class Particle {
   };
 
   update(v){
-    this.pos.x += v.x ;
+    this.pos.x += 1+ v.x ;
     this.pos.y += v.y ;
   };
 
   // function to evaluate the force exerted by the rest of the particles
   forceField(a){
+    const g = params.g;
     let resultant = new Vector(0,0);
 
     for (let i = 0; i < a.length; i++) {
       const particleB = a[i];
       const dist = this.pos.getDistance(particleB.pos);
-      let force = params.g * this.charge * particleB.charge / dist*dist;
+
+      let force = 2 * g * this.charge * particleB.charge / Math.pow(dist,2);
 
       if (dist == 0) force = 0;
 
@@ -150,3 +150,6 @@ class Particle {
     context.restore();
   };
 };
+
+createPane();
+canvasSketch(sketch, settings);
